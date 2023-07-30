@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 240, 255, 244;
+  --background-end-rgb: 240, 255, 244;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 25, 25, 25;
+    --background-end-rgb: 25, 25, 25;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer components {
+  .input-group {
+    position: relative;
+  }
+  .input-field {
+    background-color: transparent;
+    padding: 10px;
+    box-sizing: border-box;
+    outline: none;
+    border: 2px solid #5e5e5e;
+  }
+  .input-placeholder {
+    position: absolute;
+    top: 10px;
+    left: 8px;
+    font-size: 14px;
+    padding: 0px 5px;
+    color: #777;
+    transition: 0.3s;
+    pointer-events: none;
+    font-weight: 500;
+  }
+  .input-field:focus + .input-placeholder,
+  .input-field:not(:placeholder-shown) + .input-placeholder {
+    top: -10px;
+    color: #43be3e;
+    background-color: rgb(var(--background-start-rgb));
+  }
+  .input-field:focus,
+  .input-field:not(:placeholder-shown) {
+    border: 2px solid #43be3e;
+  }
+}
