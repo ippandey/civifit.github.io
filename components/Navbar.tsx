@@ -14,7 +14,7 @@ export default function Navbar() {
   const auth = getAuth(app);
   const [loading, setLoading] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
-
+  // const [user, setUser] = useState<User | null>(true);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -25,7 +25,8 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="flex items-center justify-between h-20 px-5 md:px-10">
+      <div className="sticky top-0 z-50 flex items-center justify-between h-20 dark:bg-slate-800 bg-slate-700 px-5 md:px-10">
+      
         <div className="w-20 h-full relative shrink-0">
           <Link href={"/"}>
             <Image
@@ -36,7 +37,7 @@ export default function Navbar() {
             />
           </Link>
         </div>
-        <ul className="md:flex hidden gap-6 text-black/60 dark:text-white/60">
+        <ul className="md:flex hidden gap-6 text-black dark:text-white/60">
           <li
             className={`hover:text-green-500 ${
               currentRoute === "/" ? "text-green-500" : ""
@@ -73,13 +74,18 @@ export default function Navbar() {
             <Link href={"/contact"}>Contact</Link>
           </li>
         </ul>
-        <div className="w-28 h-full shrink-0 md:flex hidden justify-center items-center ">
-          {!user ? (
+
+        {/* ----  */}
+        <div className="w-75 h-full shrink-0 md:flex gap-3 hidden justify-center items-center ">
+          <div>
+          {
+          !user ? (
             <Link href="/auth/login">
               <div className="bg-green-500 text-white p-2 px-6 rounded-sm">
                 Login
               </div>
             </Link>
+
           ) : (
             <Link
               href="/account"
@@ -95,13 +101,41 @@ export default function Navbar() {
                   />
                 </div>
               ) : user.displayName ? (
-                <>Hello {user.displayName}</>
+                <> {user.displayName}</>
               ) : (
-                <>Hello {user.email?.split("@")[0]}</>
+                <> {user.email?.split("@")[0]}</>
               )}
             </Link>
-          )}
+          )
+          }
+          </div>
+          <div>
+            {!user && (
+              <Link href="/auth/signup">
+                <div className="bg-green-500 text-white p-2 px-6 rounded-sm">
+                <button onClick={() => {
+                        setUser(null);
+                    }}>Signup</button>
+                </div>
+              </Link>
+              )
+            }
+          </div>
+          <div>
+            {user && (
+              <Link href="/">
+                <div className="bg-green-500 text-white p-2 px-6 rounded-sm">
+                <button onClick={() => {
+                        setUser(null);
+                    }}>logout</button>
+                </div>
+              </Link>
+              )
+            }
+          </div>
         </div>
+        {/* ----- */}
+        
         <div
           className="w-10 h-full shrink-0 md:hidden flex justify-center items-center cursor-pointer transition-all delay-[50ms]"
           onClick={() => setIsMenuOpen((prev) => !prev)}
@@ -131,10 +165,22 @@ export default function Navbar() {
             <Link href={"/contact"}>Contact</Link>
           </li>
           <li className="p-2 hover:text-green-500">
-            {!user ? (
+            {!user && (
               <Link href="/auth/login">Login</Link>
-            ) : (
-              <Link href={"/account"}>My Account</Link>
+            )}
+          </li>
+          <li className="p-2 hover:text-green-500">
+            {!user && (
+              <Link href="/auth/signup">signup</Link>
+            )}
+          </li>
+          <li className="p-2 hover:text-green-500">
+            {user && (
+              <Link href="/">
+                <button onClick={() => {
+                        setUser(null);
+                    }}>logout</button>
+              </Link>
             )}
           </li>
         </ul>
